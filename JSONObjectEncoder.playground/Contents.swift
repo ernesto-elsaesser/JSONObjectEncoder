@@ -9,6 +9,7 @@ enum JSONObjectEncoderError: Error {
 class JSONObjectEncoder : Encoder {
     
     private(set) var json : NSObject?
+    
     public let codingPath: [CodingKey] = []
     public let userInfo: [CodingUserInfoKey : Any] = [:]
     
@@ -205,14 +206,14 @@ class JSONObjectBoxer {
     }
 }
 
-// Test
+// Usage
 
 struct Person: Codable {
     let name: String
     let age: Int
     let height: Double
     let isFemale: Bool
-    let lastWorkDay: Date?
+    let firstWorkDay: Date?
 }
 
 struct Family: Codable {
@@ -221,10 +222,10 @@ struct Family: Codable {
     let children: [Person]
 }
 
-let hans = Person(name: "Hans", age: 45, height: 1.82, isFemale: false, lastWorkDay: Date())
-let renate = Person(name: "Renate", age: 39, height: 1.66, isFemale: true, lastWorkDay: Date())
-let karl = Person(name: "Karl", age: 17, height: 1.77, isFemale: false, lastWorkDay: nil)
-let jana = Person(name: "Jana", age: 12, height: 1.20, isFemale: true, lastWorkDay: nil)
+let hans = Person(name: "Hans", age: 65, height: 1.82, isFemale: false, firstWorkDay: Date(timeIntervalSince1970: 0))
+let renate = Person(name: "Renate", age: 59, height: 1.66, isFemale: true, firstWorkDay: Date(timeIntervalSince1970: 300000000))
+let karl = Person(name: "Karl", age: 27, height: 1.80, isFemale: false, firstWorkDay: Date())
+let jana = Person(name: "Jana", age: 19, height: 1.73, isFemale: true, firstWorkDay: nil)
 
 let theSchmidts = Family(father: hans, mother: renate, children: [karl, jana])
 

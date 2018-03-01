@@ -2,5 +2,10 @@
 <Timeline
    version = "3.0">
    <TimelineItems>
+      <LoggerValueHistoryTimelineItem
+         documentLocation = "file:///Users/ernesto/Projects/XCode/JSONObjectEncoder/JSONObjectEncoder.playground#CharacterRangeLen=39&amp;CharacterRangeLoc=12040&amp;EndingColumnNumber=0&amp;EndingLineNumber=238&amp;StartingColumnNumber=5&amp;StartingLineNumber=237&amp;Timestamp=541636207.586508"
+         selectedRepresentationIndex = "0"
+         shouldTrackSuperviewWidth = "NO">
+      </LoggerValueHistoryTimelineItem>
    </TimelineItems>
 </Timeline>
