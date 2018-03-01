@@ -2,15 +2,14 @@
 
 import Foundation
 
-enum JSONObjectEncoderError: Error {
+enum JSONObjectEncoderError : Error {
     case unsupportedValue(value: Any)
 }
 
-class JSONObjectEncoder : Encoder {
+class JSONObjectEncoder : Encoder, CodingPathIgnoring {
     
     private(set) var json : NSObject?
     
-    public let codingPath: [CodingKey] = []
     public let userInfo: [CodingUserInfoKey : Any] = [:]
     
     public func container<Key>(keyedBy: Key.Type) -> KeyedEncodingContainer<Key> {
@@ -30,11 +29,11 @@ class JSONObjectEncoder : Encoder {
     }
 }
 
-fileprivate struct JSONObjectEncoderKeyedContainer<K : CodingKey> : KeyedEncodingContainerProtocol {
+struct JSONObjectEncoderKeyedContainer<K : CodingKey> : KeyedEncodingContainerProtocol, CodingPathIgnoring {
+    
     typealias Key = K
     
     public let dictionary = NSMutableDictionary()
-    public let codingPath: [CodingKey] = []
     
     public mutating func encodeNil(forKey key: Key) throws { dictionary[key.stringValue] = NSNull() }
     public mutating func encode(_ value: Bool, forKey key: Key) throws { dictionary[key.stringValue] = JSONObjectBoxer.box(value) }
@@ -74,10 +73,9 @@ fileprivate struct JSONObjectEncoderKeyedContainer<K : CodingKey> : KeyedEncodin
     }
 }
 
-fileprivate struct JSONObjectEncoderUnkeyedContainer : UnkeyedEncodingContainer {
+struct JSONObjectEncoderUnkeyedContainer : UnkeyedEncodingContainer, CodingPathIgnoring {
     
     public let array = NSMutableArray()
-    public let codingPath: [CodingKey] = []
     public var count: Int { return self.array.count }
     
     public mutating func encodeNil()             throws { array.add(NSNull()) }
@@ -136,7 +134,7 @@ extension JSONObjectEncoder : SingleValueEncodingContainer {
 
 class JSONObjectBoxer {
     
-    // This could be replaces by a custom closure if necessary
+    // This could be replaced by a custom closure if necessary
     public static var formatDate: (Date) -> (NSString) = {
         if #available(OSX 10.12, iOS 10.0, watchOS 3.0, tvOS 10.0, *) {
             
@@ -204,6 +202,12 @@ class JSONObjectBoxer {
         
         return nestedEncoder.json ?? NSDictionary()
     }
+}
+
+protocol CodingPathIgnoring { }
+
+extension CodingPathIgnoring {
+    public var codingPath: [CodingKey] { return [] }
 }
 
 // Usage
